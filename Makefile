@@ -49,16 +49,16 @@ lint:
 
 test: clean
 	@# Remove stale or duplicate .dist-info so only one version's metadata is visible (avoids AttributeError on get("Name").lower()).
-	@rm -rf .venv/lib/python*/site-packages/openfisca_country_template-*.dist-info 2>/dev/null || true
+	@rm -rf .venv/lib/python*/site-packages/openfisca_argentina-*.dist-info 2>/dev/null || true
 	uv sync --group dev
-	@# Path must be openfisca_country_template/tests only (not the whole package), so parameter YAMLs are not collected as tests.
-	uv run openfisca test --country-package openfisca_country_template openfisca_country_template/tests
+	@# Path must be openfisca_argentina/tests only (not the whole package), so parameter YAMLs are not collected as tests.
+	uv run openfisca test --country-package openfisca_argentina openfisca_argentina/tests
 
 # Run the same checks as the CI (validate workflow), without the version/changelog check.
 ci: check-syntax-errors check-style
 	@bash .github/lint-files.sh "*.py" "uv run ruff check --exit-zero"
-	@bash .github/lint-files.sh "openfisca_country_template/tests/*.yaml" "uv run yamllint"
+	@bash .github/lint-files.sh "openfisca_argentina/tests/*.yaml" "uv run yamllint"
 	$(MAKE) test
 
 serve-local: build
-	uv run openfisca serve --country-package openfisca_country_template
+	uv run openfisca serve --country-package openfisca_argentina
