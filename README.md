@@ -6,7 +6,7 @@
 > **Note:** This is an early-stage implementation. The modelling of Argentina's
 > tax and benefit system is not yet complete. Contributions are very welcome!
 >
-> The Python module is currently named `openfisca_country_template` (inherited
+> The Python module is currently named `openfisca_argentina` (inherited
 > from the OpenFisca country template). It will be renamed to `openfisca_ar`
 > in a future step. Commands and paths in this README reflect the current
 > state of the repository.
@@ -23,7 +23,7 @@ For more information on OpenFisca's features and usage, see the
 ## What is Modelled
 
 The following elements of Argentina's tax and benefit system are currently
-modelled. All legislation is in the `openfisca_country_template` folder.
+modelled. All legislation is in the `openfisca_argentina` folder.
 
 - **Taxes** (`variables/taxes.py`, `parameters/taxes/`):
   - Income tax (`income_tax`) — a flat-rate tax applied to salary, capital
@@ -149,7 +149,7 @@ make test
 Or directly with uv:
 
 ```sh
-uv run openfisca test --country-package openfisca_country_template openfisca_country_template/tests
+uv run openfisca test --country-package openfisca_argentina openfisca_argentina/tests
 ```
 
 ## Code Style
@@ -208,7 +208,7 @@ change is merged to the `main` branch.
 You can serve the OpenFisca Web API locally:
 
 ```sh
-openfisca serve --port 5000 --country-package openfisca_country_template
+openfisca serve --port 5000 --country-package openfisca_argentina
 ```
 
 Or with the Makefile shortcut:
@@ -234,7 +234,7 @@ Run a sample calculation against the API:
 
 ```sh
 curl -X POST -H "Content-Type: application/json" \
-  -d @./openfisca_country_template/situation_examples/couple.json \
+  -d @./openfisca_argentina/situation_examples/couple.json \
   http://localhost:5000/calculate
 ```
 
