@@ -4,7 +4,7 @@
 #
 # Example usage:
 #   lint-files.sh "*.py" "uv run ruff check --exit-zero"
-#   lint-files.sh "openfisca_country_template/tests/*.yaml" "uv run yamllint"
+#   lint-files.sh "openfisca_argentina/tests/*.yaml" "uv run yamllint"
 
 file_pattern=$1
 linter_command=$2
