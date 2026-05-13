@@ -4,7 +4,7 @@ requires = [ "setuptools>=61" ]
 
 [project]
 name = "openfisca-ar"
-version = "1.0.0"
+version = "0.0.1"
 description = "OpenFisca Rules as Code model for Argentina."
 readme = "README.md"
 keywords = [ "argentina", "benefit", "microsimulation", "rac", "rules-as-code", "tax" ]
