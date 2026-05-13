@@ -1,5 +1,21 @@
 # Changelog
 
+# 1.0.0 [#1](https://github.com/paulrm/openfisca-ar/pull/1)
+
+* Tax and benefit system evolution — initial Argentina package.
+* Details:
+  - Rebranded from the OpenFisca Country-Template to **OpenFisca Argentina**.
+  - Updated `pyproject.toml`: package name set to `openfisca-ar`, version
+    reset to `1.0.0`, description and URLs updated to point to the
+    `paulrm/openfisca-ar` repository.
+  - Rewrote `README.md` in English, documenting what is modelled, how to
+    install and test the package, and the semantic versioning strategy.
+  - Adopted [semantic versioning](http://semver.org/): patch bumps for
+    calculation fixes, minor bumps for new variables, major bumps for
+    breaking changes.
+
+<!-- -->
+
 ### 8.0.3 [#171](https://github.com/openfisca/country-template/pull/171)
 
 * Technical improvement.
