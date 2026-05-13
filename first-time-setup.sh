@@ -77,7 +77,7 @@ then
 	echo -e "${PURPLE}*  ${PURPLE}Initial git commit made to 'main' branch: '\033[0m${BLUE}$first_commit_message\033[0m${PURPLE}'\033[0m"
 fi
 
-all_module_files=`find openfisca_country_template -type f ! -name "*.DS_Store"`
+all_module_files=`find openfisca_argentina -type f ! -name "*.DS_Store"`
 echo -e "${PURPLE}*  ${PURPLE}Replace default country_template references\033[0m"
 # Use intermediate backup files (`-i`) with a weird syntax due to lack of portable 'no backup' option. See https://stackoverflow.com/q/5694228/594053.
 sed -i.template "s|openfisca-country_template|openfisca-$NO_SPACES_JURISDICTION_LABEL|g" README.md Makefile pyproject.toml CONTRIBUTING.md
@@ -101,7 +101,7 @@ sed -i.template "s|repository_folder|$REPOSITORY_FOLDER|g" README.md
 find . -name "*.template" -type f -delete
 
 echo -e "${PURPLE}*  ${PURPLE}Rename package to: \033[0m${BLUE}$package_name\033[0m"
-git mv openfisca_country_template $package_name
+git mv openfisca_argentina $package_name
 
 echo -e "${PURPLE}*  ${PURPLE}Remove single use first time setup files\033[0m"
 git rm .github/workflows/first-time-setup.yml > /dev/null 2>&1
