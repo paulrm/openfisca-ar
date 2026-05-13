@@ -187,4 +187,4 @@ jobs:
           fetch-depth: 0 # Fetch all the tags
 
       - name: Check version number has been properly updated
-        run: "${GITHUB_WORKSPACE}/.github/is-version-number-acceptable.sh"
+        run: "${GITHUB_WORKSPACE}/.github/is-version-number-acceptable.sh --always"
