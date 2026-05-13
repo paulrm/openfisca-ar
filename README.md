@@ -1,340 +1,263 @@
-# OpenFisca Country-Template
+# OpenFisca Argentina
 
-This repository helps you quickly set up and use your own OpenFisca country
-package.
+[![Python](https://img.shields.io/pypi/pyversions/openfisca-ar.svg)](https://pypi.python.org/pypi/openfisca-ar)
+[![PyPI](https://img.shields.io/pypi/v/openfisca-ar.svg?style=flat)](https://pypi.python.org/pypi/openfisca-ar)
 
-**You should NOT fork it** but follow the set up instructions below.
-
-> Otherwise, you will have to clean up all tags when you deploy your own
-> country package.
-
-## Setting up your Country Package
-
-This set of instructions **only needs to be followed once** and will create
-your own copy of this boilerplate directory, customising it to the country you
-want to work on. You will need to have [Git](https://git-scm.com) installed.
-
-### Using GitHub (recommended for GitHub users)
-
-1. Click on the
-   [“Use this template” dropdown and select “Create a new repository”](https://github.com/new?template_name=country-template&template_owner=openfisca).
-
-2. Set the repository name to `openfisca-<your_country_name>`; use underscore
-   `_` as separator if there are spaces in the country name. For example,
-   `openfisca-new_zealand` or `openfisca-france`.
-
-3. After being redirected to your newly created repository, please allow a few
-   minutes for the automatic setup to be executed. Once done, the title of the
-   README file should be updated to `OpenFisca <your_country_name>`.
-
-> If the automatic setup does not start within a few minutes, you can initiate
-> it manually:
+> **Note:** This is an early-stage implementation. The modelling of Argentina's
+> tax and benefit system is not yet complete. Contributions are very welcome!
 >
-> - Navigate to the “Actions” tab.
-> - Select the “First time setup” workflow.
-> - Click on “Run workflow” to start the setup process manually.
+> The Python module is currently named `openfisca_country_template` (inherited
+> from the OpenFisca country template). It will be renamed to `openfisca_ar`
+> in a future step. Commands and paths in this README reflect the current
+> state of the repository.
 
-4. Follow the instructions in the new repository's README.md.
+## Introduction
 
-### Manual setup (recommended for users of other Git hosts)
+[OpenFisca](https://openfisca.org) is a versatile open-source microsimulation
+framework. This repository contains the OpenFisca model of the Argentine tax
+and benefit system.
 
-1. [Download a copy](https://github.com/openfisca/country-template/archive/master.zip)
-   of this repository, unzip it and `cd` into it in a Terminal window.
+For more information on OpenFisca's features and usage, see the
+[general OpenFisca documentation](https://openfisca.org/doc/).
 
-2. Create a new repository on your favourite git host (Bitbucket, GitLab, …)
-   with the name `openfisca-<your_country_name>`. For example,
-   `openfisca-new_zealand` or `openfisca-france`.
+## What is Modelled
 
-3. Execute the `first-time-setup.sh` script to initialise the git repository.
-   This performs numerous tasks including replacing all references to
-   `openfisca-country_template` with references to the new country package.
+The following elements of Argentina's tax and benefit system are currently
+modelled. All legislation is in the `openfisca_country_template` folder.
 
-   - To execute the script run `bash first-time-setup.sh` from the command line
-   - After the `first-time-setup.sh` has run both it and these instructions are
-     removed.
+- **Taxes** (`variables/taxes.py`, `parameters/taxes/`):
+  - Income tax (`income_tax`) — a flat-rate tax applied to salary, capital
+    returns, and pension income.
+  - Social security contribution (`social_security_contribution`) — a
+    progressive contribution on salaries, computed via a marginal scale.
+  - Housing tax (`housing_tax`) — an annual tax proportional to the size of
+    the household's accommodation.
 
-4. Follow the instructions in the new repository's `README.md.`
+- **Benefits** (`variables/benefits.py`, `parameters/benefits/`):
+  - Basic income (`basic_income`) — a monthly allowance for adults,
+    introduced in December 2015.
+  - Housing allowance (`housing_allowance`) — a rental allowance available
+    until November 2016.
+  - Pension (`pension`) — a monthly benefit for individuals above retirement
+    age.
+  - Parenting allowance (`parenting_allowance`) — an allowance for
+    low-income households with dependent children.
 
-## Writing the Legislation
+- **Reforms** (`reforms/`):
+  - A reform project that modifies social security taxation brackets is
+    included as an example.
 
-The country whose law is modelled here has a very simple tax and benefit
-system.
+> This is an initial implementation. Many taxes, transfers, and social
+> contributions still need to be added. See the
+> [issues](https://github.com/paulrm/openfisca-ar/issues) for planned work.
 
-- It has a flat rate tax whose rates increase every year.
-- On the first of December, 2015, it introduced a basic income for all its
-  citizens of age who have no income.
-- On the first of December, 2016, it removed the income condition, providing
-  all its adult citizens with a basic income.
+## Installation
 
-These elements are described in different folders. All the modelling happens
-within the `openfisca_country_template` folder.
+This package requires [Python 3.9](https://www.python.org/downloads/) or
+later. GNU/Linux, macOS, and Windows are all supported.
 
-- The rates are in the `parameters` folder.
-- The formulas are in the `variables` folder.
-- This country package comes also with *reforms* in the `reforms` folder. This
-  is optional: your country may exist without defining any reform.
-  - In this country, there is
-    [a reform project](./openfisca_country_template/reforms/modify_social_security_taxation.py)
-    aiming to modify the social security taxation, deleting the first bracket,
-    raising the intermediary ones and adding a new bracket with a higher tax
-    rate of `40 %` for people earning more than `40000`. This reform project
-    would apply starting from `2017-01-01`.
+### A. Minimal Installation (pip)
 
-The files that are outside from the `openfisca_country_template` folder are
-used to set up the development environment.
+Follow this path if you want to:
 
-## Packaging your Country Package for Distribution
-
-Country packages are Python distributions. You can choose to distribute your
-package automatically via the predefined continuous deployment system on GitHub
-Actions, or manually.
-
-### Automatic continuous deployment on GitHub
-
-This repository is configured with a continuous deployment system to automate
-the distribution of your package via `pip`.
-
-#### Setting up continuous deployment
-
-To activate the continuous deployment:
-
-1. Create an account on [PyPI](https://pypi.org/) if you don't already have
-   one.
-2. Generate a token in your PyPI account. This token will allow GitHub Actions
-   to securely upload new versions of your package to PyPI.
-3. Add this token to your GitHub repository's secrets under the name
-   `PYPI_TOKEN`.
-
-Once set up, changes to the `main` branch will trigger an automated workflow to
-build and publish your package to PyPI, making it available for `pip`
-installation.
-
-### Manual distribution
-
-If you prefer to manually manage the release and distribution of your package,
-follow the guidelines provided by the
-[Python Packaging Authority](https://python-packaging-user-guide.readthedocs.io/tutorials/distributing-packages/#packaging-your-project).
-
-This involves detailed steps on preparing your package, creating distribution
-files, and uploading them to PyPI.
-
-## Install Instructions for Users and Contributors
-
-This package requires
-[Python 3.11](https://www.python.org/downloads/release/python-390/). More
-recent versions should work, but are not tested.
-
-All platforms that can execute Python are supported, which includes GNU/Linux,
-macOS and Microsoft Windows.
-
-### Setting-up a Virtual Environment with venv
-
-In order to limit dependencies conflicts, we recommend using a
-[virtual environment](https://www.python.org/dev/peps/pep-0405/) with
-[venv](https://docs.python.org/3/library/venv.html).
-
-- A [venv](https://docs.python.org/3/library/venv.html) is a project specific
-  environment created to suit the needs of the project you are working on.
-
-To create a virtual environment, launch a terminal on your computer, `cd` into
-your directory and follow these instructions:
+- run calculations on a population;
+- create tax and benefit simulations;
+- write an extension on top of this legislation;
+- serve the package with the OpenFisca Web API.
 
 ```sh
-python3 -m venv .venv # create a new virtual environment in the “.venv” folder, which will contain all dependencies
-source .venv/bin/activate # activate the venv
+pip install openfisca-ar
 ```
 
-You can now operate in the venv you just created.
-
-You can deactivate that venv at any time with `deactivate`.
-
-:tada: You are now ready to install this OpenFisca Country Package!
-
-Two install procedures are available. Pick procedure A or B below depending on
-how you plan to use this Country Package.
-
-### A. Minimal Installation (Pip Install)
-
-Follow this installation if you wish to:
-
-- run calculations on a large population;
-- create tax & benefits simulations;
-- write an extension to this legislation (e.g. city specific tax & benefits);
-- serve your Country Package with the OpenFisca Web API.
-
-For more advanced uses, head to the
-[Advanced Installation](#advanced-installation-git-clone).
-
-#### Install this Country Package with Pip Install
-
-Inside your venv, check the prerequisites:
-
-```sh
-python --version  # should print "Python 3.11.xx".
-```
-
-```sh
-pip --version  # should print at least 9.0.
-# if not, run "pip install --upgrade pip"
-```
-
-Install the Country Package:
-
-```sh
-pip install openfisca-country_template
-```
-
-:warning: Please beware that installing the Country Package with `pip` is
-dependent on its maintainers publishing said package.
-
-:tada: This OpenFisca Country Package is now installed and ready!
+:tada: OpenFisca Argentina is now installed and ready to use!
 
 #### Next Steps
 
-- To learn how to use OpenFisca, follow our
+- Learn how to use OpenFisca by following the
   [tutorials](https://openfisca.org/doc/).
-- To serve this Country Package, serve the
-  [OpenFisca Web API](#serve-your-country-package-with-the-openFisca-web-api).
+- Serve the package with the
+  [OpenFisca Web API](#serve-openfisca-argentina-with-the-web-api).
 
-Depending on what you want to do with OpenFisca, you may want to install yet
-other packages in your venv:
+Additional packages you may find useful:
 
-- To install extensions or write on top of this Country Package, head to the
-  [Extensions documentation](https://openfisca.org/doc/contribute/extensions.html).
-- To plot simulation results, try [matplotlib](http://matplotlib.org/).
-- To manage data, check out [pandas](http://pandas.pydata.org/).
+- [matplotlib](http://matplotlib.org/) — to plot simulation results.
+- [pandas](http://pandas.pydata.org/) — to manage tabular data.
+- See the
+  [Extensions documentation](https://openfisca.org/doc/contribute/extensions.html)
+  to build on top of this package.
 
 ### B. Advanced Installation (Git Clone)
 
-Follow this tutorial if you wish to:
+Follow this path if you want to:
 
-- create or change this Country Package's legislation;
+- add or modify the modelled legislation;
 - contribute to the source code.
 
-#### Clone this Country Package with Git
-
-First, make sure [Git](https://www.git-scm.com/) is installed on your machine.
-
-Set your working directory to the location where you want this OpenFisca
-Country Package cloned.
-
-Inside your venv, check the prerequisites:
+Make sure [Git](https://www.git-scm.com/) is installed, then:
 
 ```sh
-python --version  # should print "Python 3.11.xx".
-```
-
-Clone this Country Package on your machine:
-
-```sh
-git clone https://example.com/repository.git
-cd repository_folder
+git clone https://github.com/paulrm/openfisca-ar.git
+cd openfisca-ar
 pip install --upgrade pip build twine
 pip install --editable ".[dev]" --upgrade
 ```
 
-You can make sure that everything is working by running the provided tests with
-`make test`.
+Verify the installation by running the tests:
+
+```sh
+make test
+```
 
 > [Learn more about tests](https://openfisca.org/doc/coding-the-legislation/writing_yaml_tests.html)
 
-:tada: This OpenFisca Country Package is now installed and ready!
+:tada: OpenFisca Argentina is now installed in development mode!
 
 #### Next Steps
 
-- To write new legislation, read the
-  [Coding the legislation](https://openfisca.org/doc/coding-the-legislation/index.html)
-  section to know how to write legislation.
-- To contribute to the code, read our
+- To write new legislation, read
+  [Coding the legislation](https://openfisca.org/doc/coding-the-legislation/index.html).
+- To contribute to the code, read the
   [Contribution Guidebook](https://openfisca.org/doc/contribute/index.html).
 
-### C. Contributing
+### C. Using uv (recommended)
 
-Follow this tutorial if you wish to:
-
-- contribute to the source code.
-
-_Note: This tutorial assumes you have already followed the instructions laid
-out in section [B. Advanced Installation](#b-advanced-installation-git-clone)._
-
-In order to ensure all published versions of this template work as expected,
-new contributions are tested in an isolated manner on Github Actions.
-
-Follow these steps to set up an isolated environment for testing your
-contributions as Github Actions does.
-
-#### Set up an isolated environment
-
-First, make sur [Tox](https://tox.wiki/en/4.23.0/) is installed on your
-machine.
-
-We recommend using [pipx](<(https://pypi.org/project/pipx/)>) to install `tox`,
-to avoid mixing isolated-testing dependencies testing with `virtualenv`.
+[uv](https://docs.astral.sh/uv/) is a fast Python package manager that
+simplifies dependency management.
 
 ```sh
-pipx install tox
+uv init
+uv add openfisca-ar
+uv add openfisca-core[web-api]  # optional, needed for the Web API
 ```
 
-#### Testing your contribution in an isolated environment
-
-You can make sure that your contributions will work as expected by running:
+For development:
 
 ```sh
-tox
+git clone https://github.com/paulrm/openfisca-ar.git
+cd openfisca-ar
+uv sync --group dev
 ```
 
-You can also run these in parallel:
+## Testing
+
+Run the test suite with:
 
 ```sh
-tox -p
+make test
 ```
 
-:tada: Your contribution to OpenFisca Country Package is now ready for prime
-time!
+Or directly with uv:
 
-#### Next Steps
+```sh
+uv run openfisca test --country-package openfisca_country_template openfisca_country_template/tests
+```
 
-- Open a pull request to the `main` branch of this repository.
-- Announce your changes as described in [CONTRIBUTING](CONTRIBUTING.md).
+## Code Style
 
-## Serve this Country Package with the OpenFisca Web API
+This repository enforces a consistent code style using
+[Ruff](https://docs.astral.sh/ruff/).
 
-If you are considering building a web application, you can use the packaged
-OpenFisca Web API with your Country Package.
+Check for style issues:
 
-To serve the Openfisca Web API locally, run:
+```sh
+make lint
+```
+
+Auto-fix style issues:
+
+```sh
+make format
+```
+
+## Contributing
+
+All contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md)
+for guidelines on how to open pull requests, document changes, and bump the
+version number.
+
+In short:
+
+- We follow [GitHub Flow](https://guides.github.com/introduction/flow/).
+- We use [semantic versioning](http://semver.org/) (see below).
+- Every change must be documented in [CHANGELOG.md](CHANGELOG.md).
+
+## Versioning Strategy
+
+OpenFisca Argentina follows [semantic versioning](http://semver.org/).
+Every published version conveys API compatibility information:
+
+| Change type | Version bump | Example |
+|---|---|---|
+| Renaming or removing a variable | **Major** (`X.0.0`) | `1.0.0` → `2.0.0` |
+| Adding a new variable | **Minor** (`x.Y.0`) | `1.0.0` → `1.1.0` |
+| Fixing or improving a calculation | **Patch** (`x.y.Z`) | `1.0.0` → `1.0.1` |
+
+All changes are documented in [CHANGELOG.md](CHANGELOG.md). Users who pin a
+minor version (e.g. `>=1.2.0,<2`) are guaranteed backwards-compatible
+calculations.
+
+> For example, an application using version `1.1.0` will also work with
+> `1.2.0`. An upgrade to `2.0.0` may require client-side adaptation.
+
+New versions are published automatically to
+[PyPI](https://pypi.org/project/openfisca-ar/) via GitHub Actions whenever a
+change is merged to the `main` branch.
+
+## Serve OpenFisca Argentina with the Web API
+
+You can serve the OpenFisca Web API locally:
 
 ```sh
 openfisca serve --port 5000 --country-package openfisca_country_template
 ```
 
-Or use the quick-start Make command:
+Or with the Makefile shortcut:
 
-```
+```sh
 make serve-local
 ```
 
-To read more about the `openfisca serve` command, check out its
-[documentation](https://openfisca.org/doc/openfisca-python-api/openfisca_serve.html).
-
-You can make sure that your instance of the API is working by requesting:
+Check that the API is running:
 
 ```sh
 curl "http://localhost:5000/spec"
 ```
 
-This endpoint returns the [Open API specification](https://www.openapis.org/)
-of your API.
+This returns the [OpenAPI specification](https://www.openapis.org/) of your
+instance.
 
-:tada: This OpenFisca Country Package is now served by the OpenFisca Web API!
-To learn more, go to the
-[OpenFisca Web API documentation](https://openfisca.org/doc/openfisca-web-api/index.html).
+:tada: OpenFisca Argentina is now served by the OpenFisca Web API! See the
+[Web API documentation](https://openfisca.org/doc/openfisca-web-api/index.html)
+to learn more.
 
-You can test your new Web API by sending it example JSON data located in the
-`situation_examples` folder.
+Run a sample calculation against the API:
 
 ```sh
 curl -X POST -H "Content-Type: application/json" \
   -d @./openfisca_country_template/situation_examples/couple.json \
   http://localhost:5000/calculate
 ```
+
+## Publishing a New Version
+
+This package is distributed as a Python package on
+[PyPI](https://pypi.org/project/openfisca-ar/).
+
+### Automatic (via GitHub Actions)
+
+Merging to `main` triggers the continuous deployment workflow, which builds
+and publishes the package automatically. To activate it:
+
+1. Create an account on [PyPI](https://pypi.org/) if you don't have one.
+2. Generate an API token in your PyPI account settings.
+3. Add the token to your GitHub repository secrets as `PYPI_TOKEN`.
+
+### Manual
+
+Follow the
+[Python Packaging Authority guidelines](https://packaging.python.org/tutorials/packaging-projects/)
+to build and upload manually.
+
+## Contributors
+
+See the [list of contributors](https://github.com/paulrm/openfisca-ar/graphs/contributors).

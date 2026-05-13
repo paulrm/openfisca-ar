@@ -179,12 +179,3 @@ jobs:
       - name: Test the Web API
         run: uv run "${GITHUB_WORKSPACE}/.github/test-api.sh"
 
-  check-version-and-changelog:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Fetch all the tags
-
-      - name: Check version number has been properly updated
-        run: "${GITHUB_WORKSPACE}/.github/is-version-number-acceptable.sh"
